@@ -1,10 +1,18 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Recycle, Menu, X } from "lucide-react";
+import { Recycle, Menu, X, ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -18,12 +26,20 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
+  const navigateToPage = (path: string) => {
+    navigate(path);
+    setIsMenuOpen(false);
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
+          <div 
+            className="flex items-center space-x-2 cursor-pointer"
+            onClick={() => navigate('/')}
+          >
             <div className="bg-green-600 p-2 rounded-full">
               <Recycle className="h-6 w-6 text-white" />
             </div>
@@ -46,12 +62,32 @@ const Header = () => {
             >
               Servicios
             </button>
-            <button 
-              onClick={() => scrollToSection('nosotros')}
-              className="text-gray-700 hover:text-green-600 transition-colors font-medium"
-            >
-              Nosotros
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center text-gray-700 hover:text-green-600 transition-colors font-medium">
+                Quienes somos?
+                <ChevronDown className="ml-1 h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-white shadow-lg border border-gray-200">
+                <DropdownMenuItem 
+                  onClick={() => navigateToPage('/mision-vision')}
+                  className="cursor-pointer hover:bg-green-50"
+                >
+                  Misión y Visión
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => navigateToPage('/responsabilidad-social')}
+                  className="cursor-pointer hover:bg-green-50"
+                >
+                  Responsabilidad Social
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => navigateToPage('/valores')}
+                  className="cursor-pointer hover:bg-green-50"
+                >
+                  Valores
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <button 
               onClick={() => scrollToSection('impacto')}
               className="text-gray-700 hover:text-green-600 transition-colors font-medium"
@@ -101,12 +137,27 @@ const Header = () => {
               >
                 Servicios
               </button>
-              <button 
-                onClick={() => scrollToSection('nosotros')}
-                className="text-left text-gray-700 hover:text-green-600 transition-colors font-medium py-2"
-              >
-                Nosotros
-              </button>
+              <div className="space-y-2">
+                <p className="text-gray-700 font-medium py-2">Quienes somos?</p>
+                <button 
+                  onClick={() => navigateToPage('/mision-vision')}
+                  className="text-left text-gray-600 hover:text-green-600 transition-colors pl-4 py-1"
+                >
+                  Misión y Visión
+                </button>
+                <button 
+                  onClick={() => navigateToPage('/responsabilidad-social')}
+                  className="text-left text-gray-600 hover:text-green-600 transition-colors pl-4 py-1"
+                >
+                  Responsabilidad Social
+                </button>
+                <button 
+                  onClick={() => navigateToPage('/valores')}
+                  className="text-left text-gray-600 hover:text-green-600 transition-colors pl-4 py-1"
+                >
+                  Valores
+                </button>
+              </div>
               <button 
                 onClick={() => scrollToSection('impacto')}
                 className="text-left text-gray-700 hover:text-green-600 transition-colors font-medium py-2"
